@@ -23,6 +23,7 @@ type
     Mostrar1: TMenuItem;
     Ocultar1: TMenuItem;
     Cerrar1: TMenuItem;
+    Timer2: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure ButtonStartClick(Sender: TObject);
@@ -36,6 +37,7 @@ type
     procedure PopupMenu1Popup(Sender: TObject);
     procedure FormHide(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure Timer2Timer(Sender: TObject);
   private
     FServer: TIdHTTPWebBrokerBridge;
     TrayIconData: TNotifyIconData;
@@ -172,6 +174,12 @@ begin
     FServer.DefaultPort := StrToInt(EditPort.Text);
     FServer.Active := True;
   end;
+end;
+
+procedure TForm1.Timer2Timer(Sender: TObject);
+begin
+  Hide;
+  Timer2.Enabled:=False;
 end;
 
 procedure TForm1.TrayMessage(var Msg: TMessage);

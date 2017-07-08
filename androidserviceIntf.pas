@@ -37,6 +37,8 @@ type
     function guardadatosfirma(const Actividad,Frecuencia,Observaciones,FechaHora,Folio,Fecha,usuarioid,estacionid,firmabase64,fotobase64:AnsiString): AnsiString; stdcall;
     function login(usr,password:AnsiString): AnsiString; stdcall;
     function firmadefault(const Actividad, Frecuencia,Observaciones, FechaHora, Folio, Fecha, usuarioid, estacionid,firmabase64,fotobase64: AnsiString): AnsiString; stdcall;
+    function obtendatosEmpleados(const estacionid: AnsiString): AnsiString; stdcall;
+    function obtendatosActividadesProgramadas(const estacionid, Tipo: AnsiString): AnsiString; stdcall;
   end;
 
 implementation

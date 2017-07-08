@@ -22,6 +22,8 @@ type
     function firmadefault(const Actividad, Frecuencia,
   Observaciones, FechaHora, Folio, Fecha, usuarioid, estacionid,
   firmabase64,fotobase64: AnsiString): AnsiString; stdcall;
+    function obtendatosEmpleados(const estacionid: AnsiString): AnsiString; stdcall;
+    function obtendatosActividadesProgramadas(const estacionid, Tipo: AnsiString): AnsiString; stdcall;
   end;
 
 implementation
@@ -162,6 +164,18 @@ end;
 function Tandroidservice.login(usr, password: AnsiString): AnsiString; stdcall;
 begin
   result:= DM.login(usr, password);
+end;
+
+function Tandroidservice.obtendatosActividadesProgramadas(const estacionid,
+  Tipo: AnsiString): AnsiString; stdcall;
+begin
+  result:= DM.Servidor.obtendatosActividadesProgramadas(strtoint(estacionid), strtoint(Tipo));
+end;
+
+function Tandroidservice.obtendatosEmpleados(
+  const estacionid: AnsiString): AnsiString; stdcall;
+begin
+  result:= DM.Servidor.obtendatosempleados(estacionid);
 end;
 
 function Tandroidservice.echoDouble(const Value: Double): Double; stdcall;

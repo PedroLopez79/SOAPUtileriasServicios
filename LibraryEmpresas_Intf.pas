@@ -2651,6 +2651,9 @@ type
                                         const NoAprobacion: AnsiString; const FechaAprobacion: DateTime);
     function CERsNUM(const DIR: AnsiString): AnsiString;
     function ActualizaFirmaDefault(const UsuarioID: Integer; const FIRMA: Binary): AnsiString;
+    function obtendatosempleados(const EstacionID: AnsiString): AnsiString;
+    procedure ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer);
+    function obtendatosActividadesProgramadas(const IDESTACION: Integer; const TIPO: Integer): AnsiString;
   end;
 
   { CoServiceEmpresas }
@@ -2747,6 +2750,9 @@ type
                                         const NoAprobacion: AnsiString; const FechaAprobacion: DateTime);
     function CERsNUM(const DIR: AnsiString): AnsiString;
     function ActualizaFirmaDefault(const UsuarioID: Integer; const FIRMA: Binary): AnsiString;
+    function obtendatosempleados(const EstacionID: AnsiString): AnsiString;
+    procedure ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer);
+    function obtendatosActividadesProgramadas(const IDESTACION: Integer; const TIPO: Integer): AnsiString;
   end;
 
 implementation
@@ -19509,6 +19515,76 @@ begin
     lMessage.InitializeRequestMessage(lTransportChannel, 'LibraryEmpresas', __InterfaceName, 'ActualizaFirmaDefault');
     lMessage.Write('UsuarioID', System.TypeInfo(Integer), UsuarioID, []);
     lMessage.Write('FIRMA', System.TypeInfo(Binary), FIRMA, []);
+    lMessage.Finalize;
+
+    lTransportChannel.Dispatch(lMessage);
+
+    lMessage.Read('Result', System.TypeInfo(AnsiString), Result, []);
+  finally
+    lMessage.UnsetAttributes(lTransportChannel);
+    lMessage.FreeStream;
+    lMessage := nil;
+    lTransportChannel := nil;
+  end;
+end;
+
+function TServiceEmpresas_Proxy.obtendatosempleados(const EstacionID: AnsiString): AnsiString;
+var
+  lMessage: IROMessage;
+  lTransportChannel: IROTransportChannel;
+begin
+  lMessage := __GetMessage;
+  lTransportChannel := __TransportChannel;
+  try
+    lMessage.InitializeRequestMessage(lTransportChannel, 'LibraryEmpresas', __InterfaceName, 'obtendatosempleados');
+    lMessage.Write('EstacionID', System.TypeInfo(AnsiString), EstacionID, []);
+    lMessage.Finalize;
+
+    lTransportChannel.Dispatch(lMessage);
+
+    lMessage.Read('Result', System.TypeInfo(AnsiString), Result, []);
+  finally
+    lMessage.UnsetAttributes(lTransportChannel);
+    lMessage.FreeStream;
+    lMessage := nil;
+    lTransportChannel := nil;
+  end;
+end;
+
+procedure TServiceEmpresas_Proxy.ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer);
+var
+  lMessage: IROMessage;
+  lTransportChannel: IROTransportChannel;
+begin
+  lMessage := __GetMessage;
+  lTransportChannel := __TransportChannel;
+  try
+    lMessage.InitializeRequestMessage(lTransportChannel, 'LibraryEmpresas', __InterfaceName, 'ProgramaMantenimiento');
+    lMessage.Write('IDPROGRAMAMANTENIMIENTO', System.TypeInfo(Integer), IDPROGRAMAMANTENIMIENTO, []);
+    lMessage.Write('IDESTACION', System.TypeInfo(Integer), IDESTACION, []);
+    lMessage.Finalize;
+
+    lTransportChannel.Dispatch(lMessage);
+
+  finally
+    lMessage.UnsetAttributes(lTransportChannel);
+    lMessage.FreeStream;
+    lMessage := nil;
+    lTransportChannel := nil;
+  end;
+end;
+
+function TServiceEmpresas_Proxy.obtendatosActividadesProgramadas(const IDESTACION: Integer; const TIPO: Integer): AnsiString;
+var
+  lMessage: IROMessage;
+  lTransportChannel: IROTransportChannel;
+begin
+  lMessage := __GetMessage;
+  lTransportChannel := __TransportChannel;
+  try
+    lMessage.InitializeRequestMessage(lTransportChannel, 'LibraryEmpresas', __InterfaceName, 'obtendatosActividadesProgramadas');
+    lMessage.Write('IDESTACION', System.TypeInfo(Integer), IDESTACION, []);
+    lMessage.Write('TIPO', System.TypeInfo(Integer), TIPO, []);
     lMessage.Finalize;
 
     lTransportChannel.Dispatch(lMessage);

@@ -87,4 +87,9 @@ object Form1: TForm1
       OnClick = Cerrar1Click
     end
   end
+  object Timer2: TTimer
+    OnTimer = Timer2Timer
+    Left = 24
+    Top = 160
+  end
 end
