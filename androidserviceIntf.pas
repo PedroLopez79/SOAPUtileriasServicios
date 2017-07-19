@@ -39,6 +39,8 @@ type
     function firmadefault(const Actividad, Frecuencia,Observaciones, FechaHora, Folio, Fecha, usuarioid, estacionid,firmabase64,fotobase64: AnsiString): AnsiString; stdcall;
     function obtendatosEmpleados(const estacionid: AnsiString): AnsiString; stdcall;
     function obtendatosActividadesProgramadas(const estacionid, Tipo: AnsiString): AnsiString; stdcall;
+    function obtenNotificacionesDiarias(const estacionid: AnsiString): AnsiString; stdcall;
+    function registraactividadrealizada(const status, nota, idmantenimiento: AnsiString): AnsiString; stdcall;
   end;
 
 implementation

@@ -103,6 +103,8 @@ type
     procedure Invoke_obtendatosempleados(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
     procedure Invoke_ProgramaMantenimiento(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
     procedure Invoke_obtendatosActividadesProgramadas(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+    procedure Invoke_obtenNotificacionesDiarias(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+    procedure Invoke_registraactividadrealizada(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
   end;
 
 implementation
@@ -2123,6 +2125,52 @@ begin
     lResult := (__Instance as IServiceEmpresas).obtendatosActividadesProgramadas(IDESTACION, TIPO);
 
     __Message.InitializeResponseMessage(__Transport, 'LibraryEmpresas', 'ServiceEmpresas', 'obtendatosActividadesProgramadasResponse');
+    __Message.Write('Result', TypeInfo(AnsiString), lResult, []);
+    __Message.Finalize;
+    __Message.UnsetAttributes(__Transport);
+
+  finally
+  end;
+end;
+
+procedure TServiceEmpresas_Invoker.Invoke_obtenNotificacionesDiarias(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+{ function obtenNotificacionesDiarias(const IDESTACION: Integer): AnsiString; }
+var
+  IDESTACION: Integer;
+  lResult: AnsiString;
+begin
+  CheckRoles(__Instance, GetDefaultServiceRoles);
+  try
+    __Message.Read('IDESTACION', TypeInfo(Integer), IDESTACION, []);
+
+    lResult := (__Instance as IServiceEmpresas).obtenNotificacionesDiarias(IDESTACION);
+
+    __Message.InitializeResponseMessage(__Transport, 'LibraryEmpresas', 'ServiceEmpresas', 'obtenNotificacionesDiariasResponse');
+    __Message.Write('Result', TypeInfo(AnsiString), lResult, []);
+    __Message.Finalize;
+    __Message.UnsetAttributes(__Transport);
+
+  finally
+  end;
+end;
+
+procedure TServiceEmpresas_Invoker.Invoke_registraactividadrealizada(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+{ function registraactividadrealizada(const IDACTIVIDADMANTENIMIENTO: Integer; const NOTA: AnsiString; const STATUS: AnsiString): AnsiString; }
+var
+  IDACTIVIDADMANTENIMIENTO: Integer;
+  NOTA: AnsiString;
+  STATUS: AnsiString;
+  lResult: AnsiString;
+begin
+  CheckRoles(__Instance, GetDefaultServiceRoles);
+  try
+    __Message.Read('IDACTIVIDADMANTENIMIENTO', TypeInfo(Integer), IDACTIVIDADMANTENIMIENTO, []);
+    __Message.Read('NOTA', TypeInfo(AnsiString), NOTA, []);
+    __Message.Read('STATUS', TypeInfo(AnsiString), STATUS, []);
+
+    lResult := (__Instance as IServiceEmpresas).registraactividadrealizada(IDACTIVIDADMANTENIMIENTO, NOTA, STATUS);
+
+    __Message.InitializeResponseMessage(__Transport, 'LibraryEmpresas', 'ServiceEmpresas', 'registraactividadrealizadaResponse');
     __Message.Write('Result', TypeInfo(AnsiString), lResult, []);
     __Message.Finalize;
     __Message.UnsetAttributes(__Transport);

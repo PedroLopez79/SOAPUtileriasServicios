@@ -2654,6 +2654,8 @@ type
     function obtendatosempleados(const EstacionID: AnsiString): AnsiString;
     procedure ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer);
     function obtendatosActividadesProgramadas(const IDESTACION: Integer; const TIPO: Integer): AnsiString;
+    function obtenNotificacionesDiarias(const IDESTACION: Integer): AnsiString;
+    function registraactividadrealizada(const IDACTIVIDADMANTENIMIENTO: Integer; const NOTA: AnsiString; const STATUS: AnsiString): AnsiString;
   end;
 
   { CoServiceEmpresas }
@@ -2753,6 +2755,8 @@ type
     function obtendatosempleados(const EstacionID: AnsiString): AnsiString;
     procedure ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer);
     function obtendatosActividadesProgramadas(const IDESTACION: Integer; const TIPO: Integer): AnsiString;
+    function obtenNotificacionesDiarias(const IDESTACION: Integer): AnsiString;
+    function registraactividadrealizada(const IDACTIVIDADMANTENIMIENTO: Integer; const NOTA: AnsiString; const STATUS: AnsiString): AnsiString;
   end;
 
 implementation
@@ -19585,6 +19589,54 @@ begin
     lMessage.InitializeRequestMessage(lTransportChannel, 'LibraryEmpresas', __InterfaceName, 'obtendatosActividadesProgramadas');
     lMessage.Write('IDESTACION', System.TypeInfo(Integer), IDESTACION, []);
     lMessage.Write('TIPO', System.TypeInfo(Integer), TIPO, []);
+    lMessage.Finalize;
+
+    lTransportChannel.Dispatch(lMessage);
+
+    lMessage.Read('Result', System.TypeInfo(AnsiString), Result, []);
+  finally
+    lMessage.UnsetAttributes(lTransportChannel);
+    lMessage.FreeStream;
+    lMessage := nil;
+    lTransportChannel := nil;
+  end;
+end;
+
+function TServiceEmpresas_Proxy.obtenNotificacionesDiarias(const IDESTACION: Integer): AnsiString;
+var
+  lMessage: IROMessage;
+  lTransportChannel: IROTransportChannel;
+begin
+  lMessage := __GetMessage;
+  lTransportChannel := __TransportChannel;
+  try
+    lMessage.InitializeRequestMessage(lTransportChannel, 'LibraryEmpresas', __InterfaceName, 'obtenNotificacionesDiarias');
+    lMessage.Write('IDESTACION', System.TypeInfo(Integer), IDESTACION, []);
+    lMessage.Finalize;
+
+    lTransportChannel.Dispatch(lMessage);
+
+    lMessage.Read('Result', System.TypeInfo(AnsiString), Result, []);
+  finally
+    lMessage.UnsetAttributes(lTransportChannel);
+    lMessage.FreeStream;
+    lMessage := nil;
+    lTransportChannel := nil;
+  end;
+end;
+
+function TServiceEmpresas_Proxy.registraactividadrealizada(const IDACTIVIDADMANTENIMIENTO: Integer; const NOTA: AnsiString; const STATUS: AnsiString): AnsiString;
+var
+  lMessage: IROMessage;
+  lTransportChannel: IROTransportChannel;
+begin
+  lMessage := __GetMessage;
+  lTransportChannel := __TransportChannel;
+  try
+    lMessage.InitializeRequestMessage(lTransportChannel, 'LibraryEmpresas', __InterfaceName, 'registraactividadrealizada');
+    lMessage.Write('IDACTIVIDADMANTENIMIENTO', System.TypeInfo(Integer), IDACTIVIDADMANTENIMIENTO, []);
+    lMessage.Write('NOTA', System.TypeInfo(AnsiString), NOTA, []);
+    lMessage.Write('STATUS', System.TypeInfo(AnsiString), STATUS, []);
     lMessage.Finalize;
 
     lTransportChannel.Dispatch(lMessage);
