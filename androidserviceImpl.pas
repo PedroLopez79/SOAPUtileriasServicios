@@ -22,7 +22,7 @@ type
     function firmadefault(const Actividad, Frecuencia,
   Observaciones, FechaHora, Folio, Fecha, usuarioid, estacionid,
   firmabase64,fotobase64: AnsiString): AnsiString; stdcall;
-    function obtendatosEmpleados(const estacionid: AnsiString): AnsiString; stdcall;
+    function obtendatosEmpleados(const estacionid: AnsiString; const turno: AnsiString): AnsiString; stdcall;
     function obtendatosActividadesProgramadas(const estacionid, Tipo: AnsiString): AnsiString; stdcall;
     function obtenNotificacionesDiarias(const estacionid: AnsiString): AnsiString; stdcall;
     function registraactividadrealizada(const status, nota, idmantenimiento: AnsiString): AnsiString; stdcall;
@@ -175,9 +175,9 @@ begin
 end;
 
 function Tandroidservice.obtendatosEmpleados(
-  const estacionid: AnsiString): AnsiString; stdcall;
+  const estacionid: AnsiString; const turno: AnsiString): AnsiString; stdcall;
 begin
-  result:= DM.Servidor.obtendatosempleados(estacionid);
+  result:= DM.Servidor.obtendatosempleados(estacionid, turno);
 end;
 
 function Tandroidservice.obtenNotificacionesDiarias(

@@ -2067,16 +2067,18 @@ begin
 end;
 
 procedure TServiceEmpresas_Invoker.Invoke_obtendatosempleados(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
-{ function obtendatosempleados(const EstacionID: AnsiString): AnsiString; }
+{ function obtendatosempleados(const EstacionID: AnsiString; const Turno: AnsiString): AnsiString; }
 var
   EstacionID: AnsiString;
+  Turno: AnsiString;
   lResult: AnsiString;
 begin
   CheckRoles(__Instance, GetDefaultServiceRoles);
   try
     __Message.Read('EstacionID', TypeInfo(AnsiString), EstacionID, []);
+    __Message.Read('Turno', TypeInfo(AnsiString), Turno, []);
 
-    lResult := (__Instance as IServiceEmpresas).obtendatosempleados(EstacionID);
+    lResult := (__Instance as IServiceEmpresas).obtendatosempleados(EstacionID, Turno);
 
     __Message.InitializeResponseMessage(__Transport, 'LibraryEmpresas', 'ServiceEmpresas', 'obtendatosempleadosResponse');
     __Message.Write('Result', TypeInfo(AnsiString), lResult, []);
@@ -2088,17 +2090,19 @@ begin
 end;
 
 procedure TServiceEmpresas_Invoker.Invoke_ProgramaMantenimiento(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
-{ procedure ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer); }
+{ procedure ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer; const FECHA: DateTime); }
 var
   IDPROGRAMAMANTENIMIENTO: Integer;
   IDESTACION: Integer;
+  FECHA: DateTime;
 begin
   CheckRoles(__Instance, GetDefaultServiceRoles);
   try
     __Message.Read('IDPROGRAMAMANTENIMIENTO', TypeInfo(Integer), IDPROGRAMAMANTENIMIENTO, []);
     __Message.Read('IDESTACION', TypeInfo(Integer), IDESTACION, []);
+    __Message.Read('FECHA', TypeInfo(DateTime), FECHA, [paIsDateTime]);
 
-    (__Instance as IServiceEmpresas).ProgramaMantenimiento(IDPROGRAMAMANTENIMIENTO, IDESTACION);
+    (__Instance as IServiceEmpresas).ProgramaMantenimiento(IDPROGRAMAMANTENIMIENTO, IDESTACION, FECHA);
 
     __Message.InitializeResponseMessage(__Transport, 'LibraryEmpresas', 'ServiceEmpresas', 'ProgramaMantenimientoResponse');
     __Message.Finalize;

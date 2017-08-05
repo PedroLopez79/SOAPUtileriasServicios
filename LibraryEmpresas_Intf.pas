@@ -2651,8 +2651,8 @@ type
                                         const NoAprobacion: AnsiString; const FechaAprobacion: DateTime);
     function CERsNUM(const DIR: AnsiString): AnsiString;
     function ActualizaFirmaDefault(const UsuarioID: Integer; const FIRMA: Binary): AnsiString;
-    function obtendatosempleados(const EstacionID: AnsiString): AnsiString;
-    procedure ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer);
+    function obtendatosempleados(const EstacionID: AnsiString; const Turno: AnsiString): AnsiString;
+    procedure ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer; const FECHA: DateTime);
     function obtendatosActividadesProgramadas(const IDESTACION: Integer; const TIPO: Integer): AnsiString;
     function obtenNotificacionesDiarias(const IDESTACION: Integer): AnsiString;
     function registraactividadrealizada(const IDACTIVIDADMANTENIMIENTO: Integer; const NOTA: AnsiString; const STATUS: AnsiString): AnsiString;
@@ -2752,8 +2752,8 @@ type
                                         const NoAprobacion: AnsiString; const FechaAprobacion: DateTime);
     function CERsNUM(const DIR: AnsiString): AnsiString;
     function ActualizaFirmaDefault(const UsuarioID: Integer; const FIRMA: Binary): AnsiString;
-    function obtendatosempleados(const EstacionID: AnsiString): AnsiString;
-    procedure ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer);
+    function obtendatosempleados(const EstacionID: AnsiString; const Turno: AnsiString): AnsiString;
+    procedure ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer; const FECHA: DateTime);
     function obtendatosActividadesProgramadas(const IDESTACION: Integer; const TIPO: Integer): AnsiString;
     function obtenNotificacionesDiarias(const IDESTACION: Integer): AnsiString;
     function registraactividadrealizada(const IDACTIVIDADMANTENIMIENTO: Integer; const NOTA: AnsiString; const STATUS: AnsiString): AnsiString;
@@ -19532,7 +19532,7 @@ begin
   end;
 end;
 
-function TServiceEmpresas_Proxy.obtendatosempleados(const EstacionID: AnsiString): AnsiString;
+function TServiceEmpresas_Proxy.obtendatosempleados(const EstacionID: AnsiString; const Turno: AnsiString): AnsiString;
 var
   lMessage: IROMessage;
   lTransportChannel: IROTransportChannel;
@@ -19542,6 +19542,7 @@ begin
   try
     lMessage.InitializeRequestMessage(lTransportChannel, 'LibraryEmpresas', __InterfaceName, 'obtendatosempleados');
     lMessage.Write('EstacionID', System.TypeInfo(AnsiString), EstacionID, []);
+    lMessage.Write('Turno', System.TypeInfo(AnsiString), Turno, []);
     lMessage.Finalize;
 
     lTransportChannel.Dispatch(lMessage);
@@ -19555,7 +19556,7 @@ begin
   end;
 end;
 
-procedure TServiceEmpresas_Proxy.ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer);
+procedure TServiceEmpresas_Proxy.ProgramaMantenimiento(const IDPROGRAMAMANTENIMIENTO: Integer; const IDESTACION: Integer; const FECHA: DateTime);
 var
   lMessage: IROMessage;
   lTransportChannel: IROTransportChannel;
@@ -19566,6 +19567,7 @@ begin
     lMessage.InitializeRequestMessage(lTransportChannel, 'LibraryEmpresas', __InterfaceName, 'ProgramaMantenimiento');
     lMessage.Write('IDPROGRAMAMANTENIMIENTO', System.TypeInfo(Integer), IDPROGRAMAMANTENIMIENTO, []);
     lMessage.Write('IDESTACION', System.TypeInfo(Integer), IDESTACION, []);
+    lMessage.Write('FECHA', System.TypeInfo(DateTime), FECHA, [paIsDateTime]);
     lMessage.Finalize;
 
     lTransportChannel.Dispatch(lMessage);
