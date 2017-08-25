@@ -89,7 +89,7 @@ object DM: TDM
   end
   object RemoteService: TRORemoteService
     ServiceName = 'ServiceEmpresas'
-    Channel = Channel
+    Channel = Channel1
     Message = Message
     Left = 16
     Top = 104
@@ -161,5 +161,14 @@ object DM: TDM
     DataTable = cdsFirmaDefaultUsuario
     Left = 208
     Top = 56
+  end
+  object Channel1: TROSuperTCPChannel
+    DispatchOptions = []
+    ServerLocators = <>
+    TargetUrl = 'supertcp://127.0.0.1:8001/bin'
+    Host = '127.0.0.1'
+    Port = 8001
+    Left = 360
+    Top = 8
   end
 end

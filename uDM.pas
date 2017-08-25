@@ -8,7 +8,9 @@ uses
   uDABin2DataStreamer, uDADataAdapter, uDARemoteDataAdapter,
   uROChannelAwareComponent, uRORemoteService, uROMessage, uROBinMessage,
   uROBaseConnection, uROTransportChannel, uROBaseHTTPClient,
-  uROWinInetHttpChannel, UtileriasComun, LibraryEmpresas_Intf;
+  uROWinInetHttpChannel, UtileriasComun, LibraryEmpresas_Intf,
+  uROBaseActiveEventChannel, uROBaseSuperChannel, uROBaseSuperTCPChannel,
+  uROSuperTCPChannel;
 
 type
   TDM = class(TDataModule)
@@ -21,6 +23,7 @@ type
     DataStreamer: TDABin2DataStreamer;
     cdsFirmaDefaultUsuario: TDAMemDataTable;
     dsFirmaDefaultUsuario: TDADataSource;
+    Channel1: TROSuperTCPChannel;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
@@ -47,7 +50,8 @@ const
   URL = 'http://%s:%d/BIN';
 begin
   Channel.Connected:=False;
-  Channel.TargetURL:=Format(URL, [Svr, Puerto]);
+  Channel1.Active:= False;
+  Channel1.TargetURL:=Format(URL, [Svr, Puerto]);
 end;
 
 procedure TDM.DataModuleCreate(Sender: TObject);
@@ -84,7 +88,7 @@ end;
 
 function TDM.Servidor: IServiceEmpresas;
 begin
-  Result:=CoServiceEmpresas.Create(Message, Channel);
+  Result:=CoServiceEmpresas.Create(Message, Channel1);
 end;
 
 end.

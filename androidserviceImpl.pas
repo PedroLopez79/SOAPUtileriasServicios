@@ -165,7 +165,12 @@ end;
 
 function Tandroidservice.login(usr, password: AnsiString): AnsiString; stdcall;
 begin
+  result:= '-1';
+  try
   result:= DM.login(usr, password);
+  except on E : Exception do
+    result:= E.Message;
+  end;
 end;
 
 function Tandroidservice.obtendatosActividadesProgramadas(const estacionid,

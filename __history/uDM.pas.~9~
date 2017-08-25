@@ -1,0 +1,95 @@
+unit uDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Data.DB, uDAFields, uDADataTable,
+  uROComponent, uDAScriptingProvider, uDAMemDataTable, uDADataStreamer,
+  uDABin2DataStreamer, uDADataAdapter, uDARemoteDataAdapter,
+  uROChannelAwareComponent, uRORemoteService, uROMessage, uROBinMessage,
+  uROBaseConnection, uROTransportChannel, uROBaseHTTPClient,
+  uROWinInetHttpChannel, UtileriasComun, LibraryEmpresas_Intf,
+  uROBaseActiveEventChannel, uROBaseSuperChannel, uROBaseSuperTCPChannel,
+  uROSuperTCPChannel;
+
+type
+  TDM = class(TDataModule)
+    cdsBitacoraServ: TDAMemDataTable;
+    dsBitacoraServ: TDADataSource;
+    Channel: TROWinInetHTTPChannel;
+    Message: TROBinMessage;
+    RemoteService: TRORemoteService;
+    RemoteDataAdapter: TDARemoteDataAdapter;
+    DataStreamer: TDABin2DataStreamer;
+    cdsFirmaDefaultUsuario: TDAMemDataTable;
+    dsFirmaDefaultUsuario: TDADataSource;
+    Channel1: TROSuperTCPChannel;
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    { Private declarations }
+    procedure AsignaServidor(Svr: String);
+  public
+    { Public declarations }
+    Puerto: Integer;
+    function Servidor: IServiceEmpresas;
+    function Folio(ACampo, ASerie: String): Integer;
+    function login(usr,password: String):String;
+  end;
+
+var
+  DM: TDM;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+procedure TDM.AsignaServidor(Svr: String);
+const
+  URL = 'http://%s:%d/BIN';
+begin
+  Channel1.Connected:=False;
+  //Channel.Active:= False;
+  Channel.TargetURL:=Format(URL, [Svr, Puerto]);
+  //Channel.Active:= True;
+end;
+
+procedure TDM.DataModuleCreate(Sender: TObject);
+const
+  URL = 'http://%s:9090/BIN';
+begin
+  Puerto := StrToInt(LeerRegistro('Puerto', '9090'));
+  AsignaServidor(LeerRegistro('Server', '127.0.0.1'));
+
+
+end;
+
+function TDM.Folio(ACampo, ASerie: String): Integer;
+begin
+  Result:=Servidor.Folio(ACampo, ASerie);
+end;
+
+function TDM.login(usr, password: String): String;
+var
+  Aux: LibraryEmpresas_Intf.TLoginInfo;
+begin
+  Aux:=Servidor.Login(Usr, password);
+
+  result:= '-1';
+  try
+  if Aux.Valida then
+  begin
+     result:= inttostr(Aux.EmpleadoID)+'@'+Aux.NombreEmpleado;
+  end;
+  finally
+    Aux.Free;
+  end;
+end;
+
+function TDM.Servidor: IServiceEmpresas;
+begin
+  Result:=CoServiceEmpresas.Create(Message, Channel);
+end;
+
+end.
